@@ -30,9 +30,12 @@ const SignupForm = () => {
         variables: { ...userFormData },
       });
 
+      console.log('Signup successful:', data);
       Auth.login(data.addUser.token);
     } catch (err) {
-      console.error(err);
+      console.error('Signup error:', err);
+      console.error('GraphQL errors:', err.graphQLErrors);
+      console.error('Network error:', err.networkError);
       setShowAlert(true);
     }
 

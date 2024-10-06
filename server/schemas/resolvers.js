@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User } = require('../models');
+const { User, Book } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const resolvers = {
@@ -14,9 +14,20 @@ const resolvers = {
 
   Mutation: {
     addUser: async (parent, { username, email, password }) => {
-      const user = await User.create({ username, email, password });
-      const token = signToken(user);
-      return { token, user };
+      try {
+        console.log('Creating user with:', { username, email });
+        const user = await User.create({ username, email, password });
+        console.log('User created:', user);
+        const token = signToken(user);
+        console.log('Token generated');
+        return { token, user };
+      } catch (err) {
+        console.error('Error in addUser resolver:', err);
+        if (err.name === 'MongoError' && err.code === 11000) {
+          throw new AuthenticationError('Username or email already exists');
+        }
+        throw new AuthenticationError('Error creating user');
+      }
     },
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });

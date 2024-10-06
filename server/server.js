@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const path = require('path');
@@ -13,21 +14,20 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: authMiddleware,
+  formatError: (err) => {
+    console.error('Apollo Server Error:', err);
+    return err;
+  },
 });
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Serve up static assets
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/dist')));
+  app.use(express.static(path.join(__dirname, '../client/build')));
 
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-  });
-} else {
-  app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/index.html'));
+    res.sendFile(path.join(__dirname, '../client/build/index.html'));
   });
 }
 
@@ -43,4 +43,14 @@ const startApolloServer = async () => {
   });
 };
 
-startApolloServer();
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+startApolloServer().catch((error) => {
+  console.error('Error starting Apollo Server:', error);
+});
