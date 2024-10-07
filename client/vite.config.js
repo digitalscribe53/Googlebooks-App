@@ -11,7 +11,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: 'dist',
+    outDir: 'build',
     emptyOutDir: true,
   },
   server: {
@@ -19,7 +19,9 @@ export default defineConfig({
     open: true,
     proxy: {
       '/graphql': {
-        target: 'http://localhost:3001',
+        target: process.env.NODE_ENV === 'production' 
+          ? 'https://your-render-app-url.onrender.com' 
+          : 'http://localhost:3001',
         changeOrigin: true,
         secure: false,
       }
