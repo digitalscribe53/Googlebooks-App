@@ -11,6 +11,10 @@ GoogleBooks App is a full-stack MERN application that allows users to search for
 - [Technologies](#technologies)
 - [Features](#features)
 
+## Screenshot
+
+![GoogleBooks App Screenshot](./client/public/googlebooksapp_scrnshot.JPG)
+
 
 ## Installation
 
@@ -63,7 +67,8 @@ GoogleBooks App is a full-stack MERN application that allows users to search for
 - View and manage saved books
 - Responsive design for mobile and desktop
 
-
+## Link to Live Site 
+[Click](https://googlebooks-app.onrender.com)
 
 
 
