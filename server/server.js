@@ -14,6 +14,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: authMiddleware,
+  cache: 'bounded',
   formatError: (err) => {
     console.error('Apollo Server Error:', err);
     return err;
