@@ -20,7 +20,7 @@ export default defineConfig({
     proxy: {
       '/graphql': {
         target: process.env.NODE_ENV === 'production' 
-          ? 'https://your-render-app-url.onrender.com' 
+          ? 'https://googlebooks-app.onrender.com/' 
           : 'http://localhost:3001',
         changeOrigin: true,
         secure: false,
